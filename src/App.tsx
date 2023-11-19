@@ -6,10 +6,13 @@ import { getCity } from "./utils/fetchCity.ts";
 import fetchCurrentWeather from "./utils/fetchWeather.ts";
 import Loader from "./components/Loader.tsx";
 import { WeatherCardProps } from "./types/WeatherCardProps.ts";
+import CustomCalendar from "./components/CustomCalendar.tsx";
+import Search from "./components/Search.tsx";
 
 const IPCityContext = createContext({});
 
 function App() {
+  const [currentTab, setCurrentTab] = useState(true);
   const [loading, setLoading] = useState(true);
   const [IP, setIP] = useState("");
   const [city, setCity] = useState({});
@@ -46,11 +49,11 @@ function App() {
       setIP(mainIP);
       const mainCity = await getCity(mainIP);
       setCity(mainCity);
-      console.log("IP : ", mainIP);
-      console.log("City : ", mainCity);
+      // console.log("IP: ", mainIP);
+      // console.log("City: ", mainCity);
       const weatherData = await fetchCurrentWeather(mainCity.city);
-      console.log(weatherData);
-      setCurrentWeather(weatherData); // Assign the fetched weather data to currentWeather
+      // console.log(weatherData);
+      setCurrentWeather(weatherData);
       console.log(IP, city);
       setLoading(false);
     } catch (error) {
@@ -68,6 +71,18 @@ function App() {
     fetchData();
   }
 
+  function handleSearch() {
+    console.log("Searching ...");
+  }
+
+  function toggleCurrent() {
+    setCurrentTab((oldState) => !oldState);
+  }
+
+  useEffect(() => {
+    console.log("Current tab: ", currentTab);
+  }, [currentTab]);
+
   return (
     <IPCityContext.Provider value={currentWeather}>
       <div className="container mt-5">
@@ -79,30 +94,49 @@ function App() {
                   id="current"
                   target="current"
                   label="Current"
-                  isActive={true}
+                  isActive={currentTab}
+                  onClick={toggleCurrent}
                 />
                 <TabButton
                   id="search"
                   target="search"
                   label="Search"
-                  isActive={false}
+                  isActive={!currentTab}
+                  onClick={toggleCurrent}
                 />
               </ul>
               <div className="tab-content d-flex align-items-center justify-content-center">
                 {loading ? (
                   <Loader />
+                ) : currentTab ? (
+                  <WeatherCard {...currentWeather} />
                 ) : (
-                  <WeatherCard {...currentWeather} /> // Display the WeatherCard component with data
+                  <div className="d-grid">
+                    <div className="grid-container">
+                      <CustomCalendar />
+                      <Search />
+                    </div>
+                  </div>
                 )}
               </div>
               <div className="input-group mt-3 d-grid">
-                <button
-                  className="btn btn-primary"
-                  type="button"
-                  onClick={handleRefresh}
-                >
-                  Refresh
-                </button>
+                {currentTab ? (
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    onClick={handleRefresh}
+                  >
+                    Refresh
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-success"
+                    type="button"
+                    onClick={handleSearch}
+                  >
+                    Search
+                  </button>
+                )}
               </div>
             </div>
           </div>

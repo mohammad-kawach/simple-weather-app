@@ -1,23 +1,43 @@
 body {
   background-color: #f8f9fa;
 }
+
 .weather-card {
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+
+.grid-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.tab-content {
+  min-height: 40vh;
+  position: relative;
+}
+
 .weather-icon {
   font-size: 64px;
 }
+
 .temperature {
   font-size: 48px;
   font-weight: bold;
 }
+
 .location {
   font-size: 24px;
   font-weight: bold;
 }
+
 .description {
   font-size: 18px;
   color: #6c757d;
@@ -76,4 +96,19 @@ body {
   20% {
     transform: scaleY(1);
   }
+}
+
+.suggestion-option {
+  padding: 0.5rem;
+  background-color: red;
+  cursor: pointer;
+}
+
+.suggestion-option:hover {
+  background-color: lightgray;
+}
+
+.suggestion-option:focus {
+  background-color: lightgray;
+  outline: none;
 }

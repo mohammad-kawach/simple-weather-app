@@ -8,14 +8,23 @@ import Loader from "./components/Loader.tsx";
 import { WeatherCardProps } from "./types/WeatherCardProps.ts";
 import CustomCalendar from "./components/CustomCalendar.tsx";
 import Search from "./components/Search.tsx";
+import Logo from "./assets/searching.svg";
 
 const IPCityContext = createContext({});
+
+type CitySuggestion = {
+  name: string;
+  country: string;
+};
 
 function App() {
   const [currentTab, setCurrentTab] = useState(true);
   const [loading, setLoading] = useState(true);
   const [IP, setIP] = useState("");
   const [city, setCity] = useState({});
+
+  const [searchedCity, setSearchedCity] = useState("");
+  const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
 
   const [currentWeather, setCurrentWeather] = useState<WeatherCardProps>({
     location: {
@@ -42,6 +51,10 @@ function App() {
       humidity: 94,
     },
   });
+
+  useEffect(() => {
+    console.log("suggestions", suggestions);
+  }, [suggestions]);
 
   const fetchData = async () => {
     try {
@@ -111,10 +124,22 @@ function App() {
                 ) : currentTab ? (
                   <WeatherCard {...currentWeather} />
                 ) : (
-                  <div className="d-grid">
-                    <div className="grid-container">
-                      <CustomCalendar />
-                      <Search />
+                  <div className="search-weather-card">
+                    <img
+                      className="search-svg"
+                      src={Logo}
+                      alt="searching"
+                    />
+                    <div className="d-grid">
+                      <div className="grid-container">
+                        <CustomCalendar />
+                        <Search
+                          searchedCity={searchedCity}
+                          setSearchedCity={setSearchedCity}
+                          setSuggestions={setSuggestions}
+                          suggestions={suggestions}
+                        />
+                      </div>
                     </div>
                   </div>
                 )}

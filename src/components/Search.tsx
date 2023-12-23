@@ -25,6 +25,7 @@ const Search: React.FC<SearchProps> = ({
     const city = event.target.value;
     setSearchedCity(city);
     console.log("Searched city:", city);
+    console.log(showOptions);
 
     try {
       const data = await fetchSuggestions(city);
@@ -41,6 +42,12 @@ const Search: React.FC<SearchProps> = ({
     setShowOptions(false); // Hide options when input loses focus
   };
 
+  function handleSuggestClick(option: CitySuggestion) {
+    console.log("Suggest clicked:", option.name);
+    setShowOptions(false); // Hide options when an item is clicked
+    setSearchedCity(option.name);
+  }
+
   return (
     <div className="position-relative">
       <input
@@ -51,10 +58,14 @@ const Search: React.FC<SearchProps> = ({
         onChange={handleChange}
         onBlur={handleBlur}
       />
-      {suggestions.length > 0 && (
+      {showOptions && suggestions.length > 0 && (
         <div className="list">
           {suggestions.map((option, index) => (
-            <div className="item" key={index}>
+            <div
+              className="item"
+              key={index}
+              onClick={() => handleSuggestClick(option)}
+            >
               {option.name}, {option.country}
             </div>
           ))}

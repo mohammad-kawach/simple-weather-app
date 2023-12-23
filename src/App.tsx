@@ -23,6 +23,8 @@ function App() {
   const [IP, setIP] = useState("");
   const [city, setCity] = useState({});
 
+  const [selectedDate, setSelectedDate] = useState("");
+
   const [searchedCity, setSearchedCity] = useState("");
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
 
@@ -125,14 +127,13 @@ function App() {
                   <WeatherCard {...currentWeather} />
                 ) : (
                   <div className="search-weather-card">
-                    <img
-                      className="search-svg"
-                      src={Logo}
-                      alt="searching"
-                    />
+                    <img className="search-svg" src={Logo} alt="searching" />
                     <div className="d-grid">
                       <div className="grid-container">
-                        <CustomCalendar />
+                        <CustomCalendar
+                          selectedDate={selectedDate}
+                          setSelectedDate={setSelectedDate}
+                        />
                         <Search
                           searchedCity={searchedCity}
                           setSearchedCity={setSearchedCity}

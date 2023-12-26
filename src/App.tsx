@@ -9,6 +9,8 @@ import { WeatherCardProps } from "./types/WeatherCardProps.ts";
 import CustomCalendar from "./components/CustomCalendar.tsx";
 import Search from "./components/Search.tsx";
 import Logo from "./assets/searching.svg";
+import fetchFutureWeather from "./utils/fetchWeatherByNameAndDate.ts";
+// import { log } from "console";
 
 const IPCityContext = createContext({});
 
@@ -88,6 +90,8 @@ function App() {
 
   function handleSearch() {
     console.log("Searching ...");
+    fetchFutureWeather(searchedCity, selectedDate);
+    alert("Sorry, unfortunately the subscription for searching is now paid.");
   }
 
   function toggleCurrent() {
@@ -97,6 +101,11 @@ function App() {
   useEffect(() => {
     console.log("Current tab: ", currentTab);
   }, [currentTab]);
+
+  useEffect(() => {
+    console.log("Date : ", selectedDate, ", City : ", searchedCity);
+    // fetchFutureWeather(searchedCity, selectedDate);
+  }, [selectedDate, searchedCity]);
 
   return (
     <IPCityContext.Provider value={currentWeather}>

@@ -43,9 +43,10 @@ const Search: React.FC<SearchProps> = ({
   };
 
   function handleSuggestClick(option: CitySuggestion) {
-    console.log("Suggest clicked:", option.name);
-    setShowOptions(false); // Hide options when an item is clicked
     setSearchedCity(option.name);
+    console.log("Suggest clicked: ", option.name);
+    setSuggestions([]); // Clear suggestions
+    setShowOptions(false); // Hide options when an item is clicked
   }
 
   return (
